@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body();
+    const { name, email, password } = req.body;
 
     const normalizedEmail = email.trim().toLowerCase();
 
@@ -17,7 +17,7 @@ export const register = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      name: name,
+      name,
       email: normalizedEmail,
       password: hashedPassword,
     });
