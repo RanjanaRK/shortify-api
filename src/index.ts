@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import dbConnection from "./config/db";
 import app from "./server";
+import router from "./routes/authRoutes";
 
 dotenv.config();
 
