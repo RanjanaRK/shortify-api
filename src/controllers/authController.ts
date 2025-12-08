@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { User } from "../models/user";
+
 import bcrypt from "bcryptjs";
+import { User } from "../models/User";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -11,7 +12,7 @@ export const register = async (req: Request, res: Response) => {
     const existingUser = await User.findOne({ email: normalizedEmail });
 
     if (existingUser) {
-      return res.send().json({ message: "email already exists" });
+      return res.status(400).json({ message: "Email already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
