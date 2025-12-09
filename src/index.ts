@@ -13,7 +13,7 @@ dbConnection();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(helmet());
+// app.use(helmet());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
