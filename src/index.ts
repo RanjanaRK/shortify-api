@@ -4,11 +4,14 @@ import dbConnection from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import app from "./server";
+import cookieParser from "cookie-parser";
+
 dotenv.config();
 
 dbConnection();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
