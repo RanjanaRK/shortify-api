@@ -10,6 +10,7 @@ dbConnection();
 app.use(express.json());
 
 app.use("/api", authRoutes);
+// app.use("/api", authRoutes);
 
 app.listen(8000, () => {
   console.log("server is running okay");
