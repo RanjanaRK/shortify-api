@@ -35,6 +35,8 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
+  const expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
   try {
     const { email, password } = req.body;
     const normalizedEmail = email.trim().toLowerCase();
@@ -49,8 +51,13 @@ export const login = async (req: Request, res: Response) => {
 
     if (!isMatch) return res.status(400).json({ message: "Invalid password" });
 
-    const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
+    const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!);
+
+    res.cookie("jwt-token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      expires: expiryDate,
     });
 
     return res.status(200).json({
