@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import app from "./server";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ dbConnection();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
