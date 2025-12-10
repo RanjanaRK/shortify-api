@@ -4,7 +4,7 @@ import { Url } from "../models/Url";
 import { url } from "inspector";
 
 export const CreateShortUrl = async (req: Request, res: Response) => {
-  const base = process.env.BASE_URL.replace(/\/$/, "")!;
+  const base = process.env.BASE_URL!.replace(/\/$/, "");
   try {
     const { originalUrl, shortCode } = req.body;
     if (!originalUrl) {
