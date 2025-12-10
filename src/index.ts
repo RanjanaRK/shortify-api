@@ -3,6 +3,7 @@ import express from "express";
 import dbConnection from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import urlRoutes from "./routes/urlRoutes";
 import app from "./server";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", urlRoutes);
 
 app.listen(8000, () => {
   console.log("server is running okay");
