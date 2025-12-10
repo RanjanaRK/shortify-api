@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { Url } from "../models/Url";
-import { url } from "inspector";
 
 export const CreateShortUrl = async (req: Request, res: Response) => {
   const base = process.env.BASE_URL!.replace(/\/$/, "");
