@@ -5,7 +5,7 @@ import { Url } from "../models/Url";
 export const CreateShortUrl = async (req: Request, res: Response) => {
   const base = process.env.BASE_URL!.replace(/\/$/, "");
   try {
-    const { originalUrl, shortCode } = req.body;
+    const { originalUrl } = req.body;
     if (!originalUrl) {
       return res.status(400).json({ message: "url is required" });
     }
@@ -25,20 +25,28 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
         message: "URL already shortened",
         shortUrl: `${process.env.BASE_URL}/${existing.shortCode}`,
         code: existing.shortCode,
-        id: existing._id,
+        id: existing.id,
       });
     }
+    let userId = null;
+    let guestKey = null;
+    const count = req.ip;
 
-    const existingShort = await Url.findOne({ shortCode });
-
-    if (existingShort) {
-      return res.status(201).json({
-        success: true,
-        message: "URL already shortened",
-        // shortUrl: `${process.env.BASE_URL}/${existing.shortCode}`,
-        // code: existing.shortCode,
-        // id: existing._id,
-      });
+    if (req.user?.id) {
+      userId = req.user.id;
+    } else {
+      // Guest → limit to 3
+      // Use IP as key (or cookie/session)
+      guestKey = req.ip;
+      //   const count = global.guestUrlCount.get(guestKey) || 0;
+      if (guestKey > 3) {
+        return res.status(403).json({
+          success: false,
+          message: "Guest limit reached. Please log in to shorten more URLs.",
+        });
+      }
+      //   global.guestUrlCount.set(guestKey, count + 1);
+      guestKey++;
     }
 
     const shortUrl = nanoid(10);
@@ -46,7 +54,7 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
     const newUrl = await Url.create({
       originalUrl,
       shortCode: shortUrl,
-      //   createdBy: req.user.id,
+      createdBy: req.user.id,
     });
 
     return res.status(200).json({
