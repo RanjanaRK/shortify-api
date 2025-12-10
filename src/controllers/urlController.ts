@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { Url } from "../models/Url";
 
-export const shortUrl = async (req: Request, res: Response) => {
+export const CreateShortUrl = async (req: Request, res: Response) => {
   try {
     const { originalUrl } = req.body;
 
@@ -20,12 +20,31 @@ export const shortUrl = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       success: true,
-      shortUrl: `${process.env.BASE_URL}/${shortUrl}`,
+      shortUrl: `${process.env.BASE_URL}/api/${shortUrl}`,
       code: shortUrl,
       id: newUrl.id,
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const redirectShortUrl = async (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+    const url = await Url.findOne({ shortCode: code });
+
+    if (!url) {
+      return res.status(404).json({ message: "Short URL not found" });
+    }
+
+    return res.redirect(url.originalUrl);
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching users",
+      error: error.message,
+    });
   }
 };
