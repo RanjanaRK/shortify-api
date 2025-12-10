@@ -28,26 +28,6 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
         id: existing.id,
       });
     }
-    let userId = null;
-    let guestKey = null;
-    const count = req.ip;
-
-    if (req.user?.id) {
-      userId = req.user.id;
-    } else {
-      // Guest → limit to 3
-      // Use IP as key (or cookie/session)
-      guestKey = req.ip;
-      //   const count = global.guestUrlCount.get(guestKey) || 0;
-      if (guestKey > 3) {
-        return res.status(403).json({
-          success: false,
-          message: "Guest limit reached. Please log in to shorten more URLs.",
-        });
-      }
-      //   global.guestUrlCount.set(guestKey, count + 1);
-      guestKey++;
-    }
 
     const shortUrl = nanoid(10);
 
