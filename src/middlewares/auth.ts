@@ -14,14 +14,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     };
     (req as any).user = decoded;
 
-    const user = await User.findById(decoded.id).select("-password");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    (req as any).user = user;
-
     next();
   } catch {
     res.status(401).json({ message: "Invalid token" });
