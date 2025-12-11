@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-
 import bcrypt from "bcryptjs";
 import { User } from "../models/User";
 
@@ -64,6 +63,24 @@ export const login = async (req: Request, res: Response) => {
       message: "Login successful",
       user: { id: existingUser.id, email: existingUser.email },
       token,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("jwt-token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
     });
   } catch (error) {
     console.error(error);

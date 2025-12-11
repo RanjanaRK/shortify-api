@@ -7,6 +7,7 @@ import qrRoute from "./routes/qrRoutes";
 import urlRoutes from "./routes/urlRoutes";
 import userRoutes from "./routes/userRoutes";
 import app from "./server";
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ dbConnection();
 
 app.use(express.json());
 app.use(cookieParser());
-// app.use(helmet());
+app.use(helmet());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
