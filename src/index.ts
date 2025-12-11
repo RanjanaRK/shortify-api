@@ -1,12 +1,12 @@
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import express from "express";
 import dbConnection from "./config/db";
 import authRoutes from "./routes/authRoutes";
-import userRoutes from "./routes/userRoutes";
+import qrRoute from "./routes/qrRoutes";
 import urlRoutes from "./routes/urlRoutes";
+import userRoutes from "./routes/userRoutes";
 import app from "./server";
-import cookieParser from "cookie-parser";
-import helmet from "helmet";
 
 dotenv.config();
 
@@ -19,6 +19,7 @@ app.use(cookieParser());
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", urlRoutes);
+app.use("/api/qr", qrRoute);
 
 app.listen(8000, () => {
   console.log("server is running okay");
