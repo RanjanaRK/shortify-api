@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
-app.use("/api", authRoutes);
+app.use("/auth", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", urlRoutes);
 app.use("/api/qr", qrRoute);
