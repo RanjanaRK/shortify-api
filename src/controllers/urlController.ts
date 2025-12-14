@@ -5,6 +5,7 @@ import { AnonymousUser } from "../models/anonymousUser";
 
 export const CreateShortUrl = async (req: Request, res: Response) => {
   const base = process.env.BASE_URL!.replace(/\/$/, "");
+
   try {
     const { originalUrl } = req.body;
     const anonUserId = req.headers["x-anon-id"] as string;
