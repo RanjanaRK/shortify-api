@@ -100,12 +100,14 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
 
     const shortCode = nanoid(7);
 
-    const saveUrl = await new Url({
+    const saveUrl = new Url({
       originalUrl,
       shortCode,
       createdBy: null,
       anonId: anonUserId,
     });
+
+    await saveUrl.save();
 
     await AnonymousUser.updateOne(
       { anonId: anonUserId },
