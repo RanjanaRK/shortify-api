@@ -4,7 +4,7 @@ import { auth } from "../middlewares/auth";
 
 const router = Router();
 
-router.post("/urlShort", auth, CreateShortUrl);
-router.get("/:code", auth, redirectShortUrl);
+router.post("/urlShort", CreateShortUrl);
+router.get("/:code", redirectShortUrl);
 
 export default router;

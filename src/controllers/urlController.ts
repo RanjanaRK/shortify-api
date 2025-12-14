@@ -49,7 +49,7 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
       return res.status(201).json({
         success: true,
         message: "Short URL created",
-        shortUrl: `${process.env.BASE_URL}/${shortCode}`,
+        shortUrl: `${process.env.BASE_URL}/api/${shortCode}`,
         code: shortCode,
         id: newUrl.id,
       });
@@ -84,15 +84,22 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
 
     const shortCode = nanoid(7);
 
+    const saveUrl = await Url.create({
+      originalUrl,
+      shortCode,
+      createdBy: null,
+    });
+
     await AnonymousUser.updateOne(
       { anonId: anonUserId },
       { $inc: { count: 1 } }
     );
 
     return res.status(200).json({
-      shortUrl: `${process.env.BASE_URL}/${shortCode}`,
-      saved: false,
+      message: "Your url is shorten",
+      shortUrl: `${process.env.BASE_URL}/api/${shortCode}`,
       remaining: 3 - (userCount + 1),
+      id: saveUrl.id,
     });
   } catch (error) {
     console.error(error);
