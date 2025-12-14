@@ -21,9 +21,11 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
       });
     }
 
-    const existing = await Url.findOne({ originalUrl });
+    //LOGGED IN USER
 
     if (req.user) {
+      const existing = await Url.findOne({ originalUrl });
+
       if (existing) {
         return res.status(201).json({
           success: true,
@@ -49,6 +51,8 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
         id: newUrl.id,
       });
     }
+
+    // ANONYMOUS USER
 
     if (!anonUserId) {
       return res.status(403).json({ message: "Anonymous ID missing" });
