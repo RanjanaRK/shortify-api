@@ -33,7 +33,7 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
         return res.status(201).json({
           success: true,
           message: "URL already shortened",
-          shortUrl: `${process.env.BASE_URL}/${existing.shortCode}`,
+          shortUrl: `${process.env.BASE_URL}/api/${existing.shortCode}`,
           code: existing.shortCode,
           id: existing.id,
         });
@@ -82,12 +82,29 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
         .json({ message: "Free limit reached. Please login to continue." });
     }
 
+    const existingAnon = await Url.findOne({
+      originalUrl,
+      createdBy: null,
+      anonId: anonUserId,
+    });
+
+    if (existingAnon) {
+      return res.status(201).json({
+        success: true,
+        message: "URL already shortened",
+        shortUrl: `${process.env.BASE_URL}/api/${existingAnon.shortCode}`,
+        code: existingAnon.shortCode,
+        id: existingAnon.id,
+      });
+    }
+
     const shortCode = nanoid(7);
 
-    const saveUrl = await Url.create({
+    const saveUrl = await new Url({
       originalUrl,
       shortCode,
       createdBy: null,
+      anonId: anonUserId,
     });
 
     await AnonymousUser.updateOne(
