@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { Url } from "../models/Url";
+import { AnonymousUser } from "../models/anonymousUser";
 
 export const CreateShortUrl = async (req: Request, res: Response) => {
   const base = process.env.BASE_URL!.replace(/\/$/, "");
   try {
     const { originalUrl } = req.body;
+    const anonUserId = req.headers["x-anon-id"] as string;
+
     if (!originalUrl) {
       return res.status(400).json({ message: "url is required" });
     }
-
-    const existing = await Url.findOne({ originalUrl });
 
     if (originalUrl.startsWith(base + "/")) {
       return res.status(400).json({
@@ -19,30 +20,67 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
       });
     }
 
-    if (existing) {
+    const existing = await Url.findOne({ originalUrl });
+
+    if (req.user) {
+      if (existing) {
+        return res.status(201).json({
+          success: true,
+          message: "URL already shortened",
+          shortUrl: `${process.env.BASE_URL}/${existing.shortCode}`,
+          code: existing.shortCode,
+          id: existing.id,
+        });
+      }
+      const shortCode = nanoid(10);
+
+      const newUrl = await Url.create({
+        originalUrl,
+        shortCode: shortCode,
+        createdBy: req.user.id,
+      });
+
       return res.status(201).json({
         success: true,
-        message: "URL already shortened",
-        shortUrl: `${process.env.BASE_URL}/${existing.shortCode}`,
-        code: existing.shortCode,
-        id: existing.id,
+        message: "Short URL created",
+        shortUrl: `${process.env.BASE_URL}/${shortCode}`,
+        code: shortCode,
+        id: newUrl.id,
       });
     }
 
-    const shortUrl = nanoid(10);
+    if (!anonUserId) {
+      return res.status(403).json({ message: "Anonymous ID missing" });
+    }
 
-    const newUrl = await Url.create({
-      originalUrl,
-      shortCode: shortUrl,
-      createdBy: req.user.id,
-    });
+    const anonUser = await AnonymousUser.findOne({ anonId: anonUserId });
+
+    if (!anonUser) {
+      await AnonymousUser.create({
+        anonId: anonUserId,
+        count: 0,
+      });
+    }
+
+    const userCount = anonUser?.count ?? 0;
+
+    if (userCount >= 3) {
+      return res
+        .status(403)
+        .json({ message: "Free limit reached. Please login to continue." });
+    }
+
+    const shortCode = nanoid(7);
+
+    await AnonymousUser.updateOne(
+      { anonId: anonUserId },
+      { $inc: { count: 1 } }
+    );
 
     return res.status(200).json({
-      success: true,
-      message: "short url created",
-      shortUrl: `${process.env.BASE_URL}/api/${shortUrl}`,
-      code: shortUrl,
-      id: newUrl.id,
+      shortUrl: `${process.env.BASE_URL}/${shortCode}`,
+      saved: false,
+      remaining: 3 - (userCount + 1),
     });
   } catch (error) {
     console.error(error);
