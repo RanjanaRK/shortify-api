@@ -32,7 +32,6 @@ export const optionalAuth = (
 ) => {
   const authHeader = req.headers.authorization;
 
-  // ✅ No token → allow anonymous
   if (!authHeader) {
     req.user = null;
     return next();
@@ -46,9 +45,9 @@ export const optionalAuth = (
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = decoded; // { id, email }
+    req.user = decoded;
   } catch {
-    req.user = null; // invalid token → treat as anonymous
+    req.user = null;
   }
 
   next();
