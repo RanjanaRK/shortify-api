@@ -8,10 +8,13 @@ import urlRoutes from "./routes/urlRoutes";
 import userRoutes from "./routes/userRoutes";
 import app from "./server";
 import helmet from "helmet";
+import cors from "cors";
 
 dotenv.config();
 
 dbConnection();
+
+app.use(cors());
 
 app.use(express.json());
 app.use(cookieParser());
