@@ -34,7 +34,7 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const expiryDate = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+  const expiryDate = new Date(Date.now() + 60 * 60 * 1000);
 
   try {
     const { email, password } = req.body;
@@ -50,7 +50,9 @@ export const login = async (req: Request, res: Response) => {
 
     if (!isMatch) return res.status(400).json({ message: "Invalid password" });
 
-    const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!);
+    const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!, {
+      expiresIn: "1h",
+    });
 
     res.cookie("jwt-token", token, {
       httpOnly: true,
@@ -62,7 +64,6 @@ export const login = async (req: Request, res: Response) => {
     return res.status(200).json({
       message: "Login successful",
       user: { id: existingUser.id, email: existingUser.email },
-      token,
     });
   } catch (error) {
     console.error(error);
