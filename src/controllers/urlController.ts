@@ -10,7 +10,9 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
     const { originalUrl } = req.body;
     // const anonUserId = req.headers["x-anon-id"] as string;
 
-    const anonUserId = req.cookies["anon-id"];
+    // const anonUserId = req.cookies["anon-id"];
+    const anonUserId = req.anonId;
+    console.log(anonUserId);
 
     if (!originalUrl) {
       return res.status(400).json({ message: "url is required" });
@@ -60,8 +62,6 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
     // ANONYMOUS USER
 
     if (!anonUserId) {
-      console.log(anonUserId);
-
       return res.status(403).json({ message: "Anonymous ID missing" });
     }
 
