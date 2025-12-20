@@ -1,3 +1,4 @@
+import { JwtPayload } from "jsonwebtoken";
 import { UserDocument } from "../models/User";
 
 declare global {
