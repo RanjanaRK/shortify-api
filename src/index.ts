@@ -1,14 +1,14 @@
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import helmet from "helmet";
 import dbConnection from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import qrRoute from "./routes/qrRoutes";
 import urlRoutes from "./routes/urlRoutes";
 import userRoutes from "./routes/userRoutes";
 import app from "./server";
-import helmet from "helmet";
-import cors from "cors";
 
 dotenv.config();
 
