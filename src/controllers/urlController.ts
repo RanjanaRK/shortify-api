@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { Url } from "../models/Url";
-import { AnonymousUser } from "../models/anonymousUser";
+import { AnonymousUser } from "../models/AnonymousUser";
 
 export const CreateShortUrl = async (req: Request, res: Response) => {
   const base = process.env.BASE_URL!.replace(/\/$/, "");
 
   try {
     const { originalUrl } = req.body;
-    const anonUserId = req.headers["x-anon-id"] as string;
+    // const anonUserId = req.headers["x-anon-id"] as string;
+
+    const anonUserId = req.cookies["anon-id"];
 
     if (!originalUrl) {
       return res.status(400).json({ message: "url is required" });
@@ -58,6 +60,8 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
     // ANONYMOUS USER
 
     if (!anonUserId) {
+      console.log(anonUserId);
+
       return res.status(403).json({ message: "Anonymous ID missing" });
     }
 

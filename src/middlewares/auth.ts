@@ -30,14 +30,8 @@ export const optionalAuth = (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies["jwt-token"];
 
-  if (!authHeader) {
-    req.user = null;
-    return next();
-  }
-
-  const token = authHeader.split(" ")[1];
   if (!token) {
     req.user = null;
     return next();
