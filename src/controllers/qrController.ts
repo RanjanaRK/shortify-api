@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import QRCode from "qrcode";
 import { nanoid } from "nanoid";
+import QRCode from "qrcode";
 import { Url } from "../models/Url";
 
 export const generateQrCode = async (req: Request, res: Response) => {
