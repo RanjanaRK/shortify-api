@@ -13,6 +13,6 @@ router.get("/me", auth, currentUser);
 
 router.get("/users", auth, getAllUsers);
 
-router.get("/activity", optionalAuth, checkAnonUser, getUserActivity);
+router.get("/activity", auth, getUserActivity);
 
 export default router;

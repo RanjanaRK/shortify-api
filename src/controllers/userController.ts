@@ -42,25 +42,28 @@ export const currentUser = async (req: Request, res: Response) => {
 
 export const getUserActivity = async (req: Request, res: Response) => {
   try {
-    const identityQuery = req.user.id
+    const identityQuery = req.user?.id
       ? { createdBy: req.user.id }
       : req.anonId
       ? { anonId: req.anonId }
       : null;
 
-    if (!identityQuery) {
+    if (!identityQuery)
       return res.status(401).json({ message: "Unauthorized" });
-    }
 
-    const urls = await Url.find(identityQuery).sort({ timeStamp: -1 });
+    console.log(req.user.id, "userId");
+
+    const urls = await Url.find(identityQuery).sort({
+      createdAt: -1,
+    });
 
     return res.status(200).json({
       success: true,
       count: urls.length,
       data: urls,
     });
-  } catch (error) {
-    console.error("Get activity error:", error);
+  } catch (err) {
+    console.error(err);
     return res.status(500).json({ message: "Server error" });
   }
 };
