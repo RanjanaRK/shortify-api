@@ -24,6 +24,21 @@ export const register = async (req: Request, res: Response) => {
       password: hashedPassword,
     });
 
+    // const anonId = req.anonId;
+
+    // if (anonId) {
+    //   const abc = await Url.updateMany(
+    //     {
+    //       anonId,
+    //       createdBy: null,
+    //     },
+    //     {
+    //       $set: { createdBy: existingUser.id },
+    //       $unset: { anonId: "" },
+    //     }
+    //   );
+    // }
+
     return res.status(201).json({
       message: "User registered",
       newUser: { id: newUser.id, email: newUser.email },
@@ -70,7 +85,7 @@ export const login = async (req: Request, res: Response) => {
       );
     }
 
-    res.clearCookie("anonId", {
+    res.clearCookie("anon-id", {
       httpOnly: true,
       sameSite: "lax",
     });
@@ -80,6 +95,7 @@ export const login = async (req: Request, res: Response) => {
       secure: true,
       sameSite: "lax",
       expires: expiryDate,
+      path: "/",
     });
 
     return res.status(200).json({
@@ -98,6 +114,7 @@ export const logout = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
+      path: "/",
     });
 
     return res.status(200).json({
