@@ -70,6 +70,11 @@ export const login = async (req: Request, res: Response) => {
       );
     }
 
+    res.clearCookie("anonId", {
+      httpOnly: true,
+      sameSite: "lax",
+    });
+
     res.cookie("jwt-token", token, {
       httpOnly: true,
       secure: true,
