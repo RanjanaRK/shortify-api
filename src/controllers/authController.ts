@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User";
+import { Url } from "../models/Url";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -53,6 +54,21 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
+
+    const anonId = req.anonId;
+
+    if (anonId) {
+      const abc = await Url.updateMany(
+        {
+          anonId,
+          createdBy: null,
+        },
+        {
+          $set: { createdBy: existingUser.id },
+          $unset: { anonId: "" },
+        }
+      );
+    }
 
     res.cookie("jwt-token", token, {
       httpOnly: true,
