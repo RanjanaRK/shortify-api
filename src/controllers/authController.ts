@@ -15,6 +15,9 @@ export const register = async (req: Request, res: Response) => {
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -24,20 +27,20 @@ export const register = async (req: Request, res: Response) => {
       password: hashedPassword,
     });
 
-    // const anonId = req.anonId;
+    const anonId = req.anonId;
 
-    // if (anonId) {
-    //   const abc = await Url.updateMany(
-    //     {
-    //       anonId,
-    //       createdBy: null,
-    //     },
-    //     {
-    //       $set: { createdBy: existingUser.id },
-    //       $unset: { anonId: "" },
-    //     }
-    //   );
-    // }
+    if (anonId) {
+      await Url.updateMany(
+        {
+          anonId,
+          createdBy: null,
+        },
+        {
+          $set: { createdBy: newUser.id },
+          $unset: { anonId: "" },
+        }
+      );
+    }
 
     return res.status(201).json({
       message: "User registered",
@@ -75,8 +78,7 @@ export const login = async (req: Request, res: Response) => {
     if (anonId) {
       const abc = await Url.updateMany(
         {
-          anonId,
-          createdBy: null,
+          anonId: req.anonId,
         },
         {
           $set: { createdBy: existingUser.id },

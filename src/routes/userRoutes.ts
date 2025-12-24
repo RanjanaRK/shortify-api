@@ -4,8 +4,7 @@ import {
   getAllUsers,
   getUserActivity,
 } from "../controllers/userController";
-import { auth, optionalAuth } from "../middlewares/auth";
-import { checkAnonUser } from "../middlewares/checkAnonId";
+import { auth } from "../middlewares/auth";
 
 const router = express.Router();
 
