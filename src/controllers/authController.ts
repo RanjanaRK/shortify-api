@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/User";
 import { Url } from "../models/Url";
 
-// USER REGISTRATION
+// <----------------------------------REGISTRATION----------------------------------->
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -54,29 +54,43 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-// lOGIN
+// <----------------------------------lOGIN----------------------------------->
 
 export const login = async (req: Request, res: Response) => {
   const expiryDate = new Date(Date.now() + 60 * 60 * 1000);
 
   try {
+    // Extract credentials from request body
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
+    // Normalize email to avoid case/space issues
     const normalizedEmail = email.trim().toLowerCase();
 
+    // Check if user exists
     const existingUser = await User.findOne({ email: normalizedEmail });
 
     if (!existingUser) {
-      return res.status(400).json({ message: "Email doesn't exists" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    // Compare plaintext password with hashed password
     const isMatch = await bcrypt.compare(password, existingUser.password);
 
-    if (!isMatch) return res.status(400).json({ message: "Invalid password" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid email or password" });
 
+    // Generate JWT token (valid for 1 hour)
     const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
 
+    //  Migrate anonymous URLs to logged-in user
     const anonId = req.anonId;
 
     if (anonId) {
@@ -91,11 +105,13 @@ export const login = async (req: Request, res: Response) => {
       );
     }
 
+    //  Clear anonymous  cookie after login
     res.clearCookie("anon-id", {
       httpOnly: true,
       sameSite: "lax",
     });
 
+    // Set JWT cookie
     res.cookie("jwt-token", token, {
       httpOnly: true,
       secure: true,
@@ -104,6 +120,7 @@ export const login = async (req: Request, res: Response) => {
       path: "/",
     });
 
+    // Send success response
     return res.status(200).json({
       message: "Login successful",
       user: { id: existingUser.id, email: existingUser.email },
@@ -172,7 +189,7 @@ export const login = async (req: Request, res: Response) => {
 //   }
 // };
 
-// lOGOUT
+// <----------------------------------LOGOUT----------------------------------->
 
 export const logout = async (req: Request, res: Response) => {
   try {
