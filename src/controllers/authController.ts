@@ -58,6 +58,7 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   const expiryDate = new Date(Date.now() + 60 * 60 * 1000);
+  const refreshExpiry = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // 2 days
 
   try {
     // Extract credentials from request body
@@ -130,8 +131,8 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      expires: expiryDate,
-      path: "/auth/refresh",
+      expires: refreshExpiry,
+      path: "/",
     });
 
     // Send success response
@@ -140,9 +141,9 @@ export const login = async (req: Request, res: Response) => {
       user: {
         id: existingUser.id,
         email: existingUser.email,
-        accessToken: accessToken,
-        refreshToken: refreshToken,
       },
+      accessToken: accessToken,
+      refreshToken: refreshToken,
     });
   } catch (error) {
     console.error(error);
