@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { User } from "../models/User";
 import { Url } from "../models/Url";
 
@@ -126,7 +126,7 @@ export const login = async (req: Request, res: Response) => {
       sameSite: "lax",
     });
 
-    // Set JWT cookie
+    // Store refresh token in cookie
     res.cookie("refresh-token", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -148,6 +148,30 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const refreshAccessToken = async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies["refresh-token"];
+
+    if (!refreshToken) {
+      return res.status(401).json({ message: "Refresh Token is missing" });
+    }
+
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+
+    console.log(decoded);
+
+    const newAccessToken = jwt.sign({ id: decoded }, process.env.JWT_SECRET!, {
+      expiresIn: "10m",
+    });
+
+    return res.status(200).json({
+      accessToken: newAccessToken,
+    });
+  } catch (error) {
+    return res.status(403).json({ message: "Invalid refresh token" });
   }
 };
 
