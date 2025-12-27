@@ -126,12 +126,12 @@ export const login = async (req: Request, res: Response) => {
     });
 
     // Set JWT cookie
-    res.cookie("jwt-token", accessToken, {
+    res.cookie("refresh-token", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       expires: expiryDate,
-      path: "/",
+      path: "/auth/refresh",
     });
 
     // Send success response
