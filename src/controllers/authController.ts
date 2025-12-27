@@ -85,10 +85,24 @@ export const login = async (req: Request, res: Response) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid email or password" });
 
-    // Generate JWT token (valid for 1 hour)
-    const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
-    });
+    //create a access token
+    const accessToken = jwt.sign(
+      { id: existingUser.id },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: "10m",
+      }
+    );
+
+    // create refresh token
+
+    const refreshToken = jwt.sign(
+      { id: existingUser.id },
+      process.env.REFRESH_TOKEN_SECRET!,
+      {
+        expiresIn: "2d",
+      }
+    );
 
     //  Migrate anonymous URLs to logged-in user
     const anonId = req.anonId;
@@ -112,7 +126,7 @@ export const login = async (req: Request, res: Response) => {
     });
 
     // Set JWT cookie
-    res.cookie("jwt-token", token, {
+    res.cookie("jwt-token", accessToken, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
