@@ -1,27 +1,49 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-export const auth = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(" ")[1];
+// export const auth = async (req: Request, res: Response, next: NextFunction) => {
+//   const token = req.headers.authorization?.split(" ")[1];
 
+//   try {
+//     if (req.headers.authorization === null) {
+//       req.user = null;
+//       return next();
+//     }
+
+//     if (!token)
+//       return res.status(401).json({ message: "Unauthorized: No token" });
+
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+//       id: string;
+//     };
+//     (req as any).user = decoded;
+
+//     next();
+//   } catch {
+//     res.status(401).json({ message: "Invalid token" });
+//     req.user;
+//   }
+// };
+
+export const requireAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (req.headers.authorization === null) {
-      req.user = null;
-      return next();
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "unauthorized" });
     }
 
-    if (!token)
-      return res.status(401).json({ message: "Unauthorized: No token" });
+    const token = authHeader.split(" ")[1];
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      id: string;
-    };
-    (req as any).user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
-    next();
-  } catch {
-    res.status(401).json({ message: "Invalid token" });
-    req.user;
+    req.user = { id: decoded.id as string };
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 

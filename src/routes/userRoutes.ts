@@ -4,14 +4,14 @@ import {
   getAllUsers,
   getUserActivity,
 } from "../controllers/userController";
-import { auth } from "../middlewares/auth";
+import { requireAuth } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.get("/me", auth, currentUser);
+router.get("/me", requireAuth, currentUser);
 
-router.get("/users", auth, getAllUsers);
+router.get("/users", requireAuth, getAllUsers);
 
-router.get("/activity", auth, getUserActivity);
+router.get("/activity", requireAuth, getUserActivity);
 
 export default router;
