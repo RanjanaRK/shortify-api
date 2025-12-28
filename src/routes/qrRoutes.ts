@@ -1,9 +1,9 @@
 import express from "express";
 import { generateQrCode } from "../controllers/qrController";
-import { auth } from "../middlewares/auth";
+import { requireAuth } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.post("/generate", auth, generateQrCode);
+router.post("/generate", requireAuth, generateQrCode);
 
 export default router;

@@ -42,6 +42,7 @@ export const requireAuth = async (
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
     req.user = { id: decoded.id as string };
+    next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
