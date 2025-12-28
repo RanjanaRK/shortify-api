@@ -159,14 +159,20 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     }
 
     // Verify refresh token using refresh token secret
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
-
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET!
+    ) as JwtPayload;
     console.log(decoded);
 
     //  Create a new short-lived access token
-    const newAccessToken = jwt.sign({ id: decoded }, process.env.JWT_SECRET!, {
-      expiresIn: "10m",
-    });
+    const newAccessToken = jwt.sign(
+      { id: decoded.id },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: "10m",
+      }
+    );
 
     // Send new access token to client
     return res.status(200).json({
@@ -239,9 +245,9 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    res.clearCookie("jwt-token", {
+    res.clearCookie("refresh-token", {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
     });
