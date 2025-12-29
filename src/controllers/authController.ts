@@ -260,6 +260,13 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
+    res.clearCookie("access-token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
+
     res.clearCookie("refresh-token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
