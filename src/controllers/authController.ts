@@ -126,8 +126,11 @@ export const login = async (req: Request, res: Response) => {
     // Store access token in cookie
     res.cookie("access-token", accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      // secure: process.env.NODE_ENV === "production",
+      // sameSite: "none",
+
+      secure: false, // must be false on localhost
+      sameSite: "none",
       expires: expiryDate,
       path: "/",
     });
