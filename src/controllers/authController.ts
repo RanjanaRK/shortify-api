@@ -183,12 +183,18 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
       }
     );
 
-    // Send new access token to client
-    return res.status(200).json({
-      accessToken: newAccessToken,
+    // store new access token in cookies
+    res.cookie("access-token", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 10 * 60 * 1000,
     });
+
+    return res.status(200).json({ message: "Access token refreshed" });
   } catch (error) {
-    return res.status(403).json({ message: "Invalid refresh token" });
+    return res.status(401).json({ message: "Invalid refresh token" });
   }
 };
 
