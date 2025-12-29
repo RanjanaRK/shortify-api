@@ -54,7 +54,7 @@ export const register = async (req: Request, res: Response) => {
 // <----------------------------------lOGIN----------------------------------->
 
 export const login = async (req: Request, res: Response) => {
-  const expiryDate = new Date(Date.now() + 60 * 60 * 1000);
+  const expiryDate = new Date(Date.now() + 1000 * 60 * 15);
   const refreshExpiry = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // 2 days
 
   try {
@@ -88,7 +88,7 @@ export const login = async (req: Request, res: Response) => {
       { id: existingUser.id },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "10m",
+        expiresIn: "15m",
       }
     );
 
@@ -123,6 +123,15 @@ export const login = async (req: Request, res: Response) => {
       sameSite: "lax",
     });
 
+    // Store access token in cookie
+    res.cookie("access-token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: expiryDate,
+      path: "/",
+    });
+
     // Store refresh token in cookie
     res.cookie("refresh-token", refreshToken, {
       httpOnly: true,
@@ -139,8 +148,8 @@ export const login = async (req: Request, res: Response) => {
         id: existingUser.id,
         email: existingUser.email,
       },
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      // accessToken: accessToken,
+      // refreshToken: refreshToken,
     });
   } catch (error) {
     console.error(error);
