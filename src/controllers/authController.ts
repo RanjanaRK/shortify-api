@@ -129,8 +129,8 @@ export const login = async (req: Request, res: Response) => {
       // secure: process.env.NODE_ENV === "production",
       // sameSite: "none",
 
-      secure: false, // must be false on localhost
-      sameSite: "none",
+      secure: true, // must be false on localhost
+      sameSite: "lax",
       expires: expiryDate,
       path: "/",
     });
@@ -191,7 +191,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      path: "/",
+      // path: "/",
       maxAge: 10 * 60 * 1000,
     });
 

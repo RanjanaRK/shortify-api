@@ -31,8 +31,12 @@ export const requireAuth = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies["access-token"];
-    console.log("Cookies:", req.cookies);
+    // const token = req.cookies["access-token"];
+
+    const token = req.headers.authorization?.split(" ")[1];
+
+    console.log("Cookies:", req.cookies["access-token"]);
+    console.log("CookiesToken:", token);
 
     console.log("Incoming cookies:", req.headers.cookie);
 
