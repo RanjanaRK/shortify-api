@@ -54,7 +54,7 @@ export const register = async (req: Request, res: Response) => {
 // <----------------------------------lOGIN----------------------------------->
 
 export const login = async (req: Request, res: Response) => {
-  const expiryDate = new Date(Date.now() + 1000 * 60 * 15);
+  const expiryDate = new Date(Date.now() + 1000 * 60 * 1);
   const refreshExpiry = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // 2 days
 
   try {
@@ -88,7 +88,7 @@ export const login = async (req: Request, res: Response) => {
       { id: existingUser.id },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "15m",
+        expiresIn: "1m",
       }
     );
 
@@ -124,21 +124,18 @@ export const login = async (req: Request, res: Response) => {
     });
 
     // Store access token in cookie
-    res.cookie("access-token", accessToken, {
+    res.cookie("access_token", accessToken, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === "production",
-      // sameSite: "none",
-
-      secure: true, // must be false on localhost
+      secure: true,
       sameSite: "lax",
       expires: expiryDate,
       path: "/",
     });
 
     // Store refresh token in cookie
-    res.cookie("refresh-token", refreshToken, {
+    res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "lax",
       expires: refreshExpiry,
       path: "/",
@@ -163,7 +160,7 @@ export const login = async (req: Request, res: Response) => {
 export const refreshAccessToken = async (req: Request, res: Response) => {
   try {
     // extract refresh token from cookie
-    const refreshToken = req.cookies["refresh-token"];
+    const refreshToken = req.cookies["refresh_token"];
 
     // If refresh token does not exist, user is not authenticated
     if (!refreshToken) {
@@ -182,17 +179,17 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
       { id: decoded.id },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "10m",
+        expiresIn: "1m",
       }
     );
 
     // store new access token in cookies
-    res.cookie("access-token", newAccessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+    res.cookie("access_token", newAccessToken, {
+      httpOnly: false,
+      secure: true,
       sameSite: "lax",
-      // path: "/",
-      maxAge: 10 * 60 * 1000,
+      path: "/",
+      maxAge: 1 * 60 * 1000,
     });
 
     return res.status(200).json({ message: "Access token refreshed" });
