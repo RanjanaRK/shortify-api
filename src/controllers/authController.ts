@@ -185,7 +185,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 
     // store new access token in cookies
     res.cookie("access_token", newAccessToken, {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "lax",
       path: "/",
