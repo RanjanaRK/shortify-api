@@ -162,6 +162,8 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     // extract refresh token from cookie
     const refreshToken = req.cookies["refresh_token"];
 
+    console.log(refreshToken, ":refreshtoken");
+
     // If refresh token does not exist, user is not authenticated
     if (!refreshToken) {
       return res.status(401).json({ message: "Refresh Token is missing" });
