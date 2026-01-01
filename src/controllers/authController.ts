@@ -160,7 +160,9 @@ export const login = async (req: Request, res: Response) => {
 export const refreshAccessToken = async (req: Request, res: Response) => {
   try {
     // extract refresh token from cookie
-    const refreshToken = req.cookies["refresh_token"];
+    // const refreshToken = req.cookies["refresh_token"];
+
+    const refreshToken = req.cookies.refresh_token;
 
     console.log(refreshToken, ":refreshtoken");
 
