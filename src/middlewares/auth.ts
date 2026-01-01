@@ -31,13 +31,14 @@ export const requireAuth = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-
+    // const token = req.headers.authorization?.split(" ")[1];
+    const token = req.cookies.access_token;
     console.log("CookiesToken:", token);
 
     console.log("Incoming cookies:", req.cookies.access_token);
+    console.log("Incoming AccesssToekn:", req.cookies?.["access_token"]);
 
-    if (!token) {
+    if (!token || req.cookies.access_token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 

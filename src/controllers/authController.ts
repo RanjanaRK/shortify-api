@@ -126,7 +126,7 @@ export const login = async (req: Request, res: Response) => {
     // Store access token in cookie
     res.cookie("access_token", accessToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       expires: expiryDate,
       path: "/",
@@ -135,7 +135,7 @@ export const login = async (req: Request, res: Response) => {
     // Store refresh token in cookie
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       expires: refreshExpiry,
       path: "/",
@@ -190,7 +190,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     // store new access token in cookies
     res.cookie("access_token", newAccessToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
       maxAge: 1 * 60 * 1000,
