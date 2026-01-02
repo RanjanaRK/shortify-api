@@ -161,6 +161,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
   try {
     // extract refresh token from cookie
     // const refreshToken = req.cookies["refresh_token"];
+    const expiryDate = new Date(Date.now() + 1000 * 60 * 1);
 
     const refreshToken = req.cookies.refresh_token;
 
@@ -193,7 +194,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 1 * 60 * 1000,
+      expires: expiryDate,
     });
 
     return res.status(200).json({ message: "Access token refreshed" });
