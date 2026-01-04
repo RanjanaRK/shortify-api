@@ -11,6 +11,7 @@ export const checkAnonUser = (
     let anonId: string | null = null;
     const token = req.cookies?.["anon-id"];
 
+    if (req.user?.id) return next();
     if (token) {
       anonId = verifyAnonToken(token) as string;
     }

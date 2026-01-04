@@ -51,25 +51,84 @@ export const requireAuth = async (
   }
 };
 
-export const optionalAuth = (
+// export const optionalAuth = (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const accessToken = req.cookies.access_token;
+//   const refreshToken = req.cookies.refresh_token;
+
+//   console.log(accessToken, ":optionalauthatoekn");
+//   console.log(refreshToken, ":optionrefreshtoken");
+//   if (!refreshToken || !accessToken) {
+//     req.user = null;
+//     return next();
+//   }
+
+//   try {
+//     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET!);
+//     req.user = decoded;
+//     return next();
+//   } catch {
+//     if (!refreshToken) {
+//       req.user = null;
+
+//       return next();
+//     }
+//   }
+
+//   next();
+// };
+
+export const optionalAuth = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies.access_token;
+  const accessToken = req.cookies.access_token;
+  const refreshToken = req.cookies.refresh_token;
 
-  console.log(token, ":optionalauthatoekn");
-  if (!token) {
+  // No refresh → definitely anonymous
+  if (!refreshToken) {
     req.user = null;
     return next();
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = decoded;
-  } catch {
-    req.user = null;
+  // Try access token
+  if (accessToken) {
+    try {
+      const decoded = jwt.verify(accessToken, process.env.JWT_SECRET!);
+      req.user = decoded;
+      return next();
+    } catch {
+      // fall through to refresh
+    }
   }
 
-  next();
+  // 🔁 REFRESH ACCESS TOKEN
+  try {
+    const decodedRefresh = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET!
+    ) as any;
+
+    const newAccessToken = jwt.sign(
+      { id: decodedRefresh.id },
+      process.env.JWT_SECRET!,
+      { expiresIn: "15m" }
+    );
+
+    res.cookie("access_token", newAccessToken, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    req.user = { id: decodedRefresh.id };
+    return next();
+  } catch {
+    req.user = null;
+    return next();
+  }
 };
