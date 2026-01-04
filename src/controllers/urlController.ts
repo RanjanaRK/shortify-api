@@ -134,7 +134,19 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
 export const redirectShortUrl = async (req: Request, res: Response) => {
   try {
     const { code } = req.params;
-    const url = await Url.findOne({ shortCode: code });
+    const url = await Url.findOneAndUpdate(
+      {
+        shortCode: code,
+      },
+      {
+        $inc: {
+          clicks: 1,
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     if (!url) {
       return res.status(404).json({ message: "Short URL not found" });
