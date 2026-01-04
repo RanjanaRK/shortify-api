@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { User } from "../models/User";
 import { Url } from "../models/Url";
+import { User } from "../models/User";
 
 // <----------------------------------REGISTRATION----------------------------------->
 
@@ -148,8 +148,6 @@ export const login = async (req: Request, res: Response) => {
         id: existingUser.id,
         email: existingUser.email,
       },
-      // accessToken: accessToken,
-      // refreshToken: refreshToken,
     });
   } catch (error) {
     console.error(error);

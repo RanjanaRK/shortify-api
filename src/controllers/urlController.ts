@@ -26,7 +26,7 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
 
     //LOGGED IN USER
 
-    console.log(req.user?.id, ":userid from url hsorten");
+    // console.log(req.user?.id, ":userid from url hsorten");
 
     if (req.user?.id) {
       const existing = await Url.findOne({
