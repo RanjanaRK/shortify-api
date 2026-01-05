@@ -4,7 +4,8 @@ import {
   getAllUsers,
   getUserActivity,
 } from "../controllers/userController";
-import { requireAuth } from "../middlewares/auth";
+import { requireAuth } from "../middlewares/authToken";
+// import { requireAuth } from "../middlewares/auth";
 
 const router = express.Router();
 
