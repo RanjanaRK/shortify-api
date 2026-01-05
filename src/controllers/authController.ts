@@ -54,7 +54,7 @@ export const register = async (req: Request, res: Response) => {
 // <----------------------------------lOGIN----------------------------------->
 
 export const login = async (req: Request, res: Response) => {
-  const expiryDate = new Date(Date.now() + 1000 * 60 * 1);
+  const expiryDate = new Date(Date.now() + 1000 * 60 * 5);
   const refreshExpiry = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // 2 days
 
   try {
@@ -159,7 +159,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
   try {
     // extract refresh token from cookie
     // const refreshToken = req.cookies["refresh_token"];
-    const expiryDate = new Date(Date.now() + 1000 * 60 * 1);
+    const expiryDate = new Date(Date.now() + 1000 * 60 * 5);
 
     const refreshToken = req.cookies.refresh_token;
 

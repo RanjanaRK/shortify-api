@@ -48,8 +48,12 @@ export const optionalAuth = async (
       req.user = { id: decodedRefresh.id };
       return next();
     } catch {
-      res.clearCookie("access_token");
-      res.clearCookie("refresh_token");
+      res.clearCookie("access_token", {
+        path: "/",
+      });
+      res.clearCookie("refresh_token", {
+        path: "/",
+      });
       req.user = null;
       return next();
     }
