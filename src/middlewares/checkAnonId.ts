@@ -10,11 +10,14 @@ export const checkAnonUser = (
   try {
     let anonId: string | null = null;
     const token = req.cookies?.["anon-id"];
+    console.log(token, ":anonid");
 
     if (req.user?.id) return next();
+    // if (!req.user?.id) {
     if (token) {
       anonId = verifyAnonToken(token) as string;
     }
+    // }
 
     if (!anonId) {
       anonId = nanoid();

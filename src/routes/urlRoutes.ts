@@ -1,7 +1,7 @@
 import { Router } from "express";
+
 import { CreateShortUrl, redirectShortUrl } from "../controllers/urlController";
-import { optionalAuth } from "../middlewares/auth";
-import { checkAnonUser } from "../middlewares/checkAnonId";
+import { checkAnonUser, optionalAuth } from "../middlewares/authanon";
 
 const router = Router();
 

@@ -88,7 +88,7 @@ export const login = async (req: Request, res: Response) => {
       { id: existingUser.id },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "1m",
+        expiresIn: "5m",
       }
     );
 
@@ -182,7 +182,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
       { id: decoded.id },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "1m",
+        expiresIn: "5m",
       }
     );
 
