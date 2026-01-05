@@ -43,6 +43,8 @@ export const requireAuth = async (
       req.user = { id: decoded.id };
       return next();
     } catch {
+      res.clearCookie("access_token");
+      res.clearCookie("refresh_token");
       return res.status(401).json({ message: "Session expired" });
     }
   }

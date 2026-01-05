@@ -22,9 +22,7 @@ export const optionalAuth = async (
       const decoded = jwt.verify(accessToken, process.env.JWT_SECRET!);
       req.user = { id: (decoded as any).id };
       return next();
-    } catch {
-      // fallthrough to refresh token
-    }
+    } catch {}
   }
 
   if (refreshToken) {
@@ -50,6 +48,8 @@ export const optionalAuth = async (
       req.user = { id: decodedRefresh.id };
       return next();
     } catch {
+      res.clearCookie("access_token");
+      res.clearCookie("refresh_token");
       req.user = null;
       return next();
     }
@@ -59,7 +59,7 @@ export const optionalAuth = async (
   next();
 };
 
-// checkAnonUser: creates anonId cookie for non-logged-in users
+// creates anonId cookie for non-logged-in users
 export const checkAnonUser = (
   req: Request,
   res: Response,
