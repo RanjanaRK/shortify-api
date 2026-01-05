@@ -61,7 +61,7 @@ export const optionalAuth = async (
     const newAccessToken = jwt.sign(
       { id: decodedRefresh.id },
       process.env.JWT_SECRET!,
-      { expiresIn: "15m" }
+      { expiresIn: "5m" }
     );
 
     res.cookie("access_token", newAccessToken, {
