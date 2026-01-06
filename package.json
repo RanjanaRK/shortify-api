@@ -43,6 +43,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.10.1",
     "@types/qrcode": "^1.5.6",
+    "@types/request-ip": "^0.0.41",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   }
