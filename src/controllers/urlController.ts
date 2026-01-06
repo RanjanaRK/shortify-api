@@ -134,46 +134,84 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
   }
 };
 
+// export const redirectShortUrl = async (req: Request, res: Response) => {
+//   try {
+//     const { code } = req.params;
+//     const url = await Url.findOneAndUpdate(
+//       {
+//         shortCode: code,
+//       },
+//       {
+//         $inc: {
+//           clicks: 1,
+//         },
+//       },
+//       {
+//         new: true,
+//       }
+//     );
+
+//     if (!url) {
+//       return res.status(404).json({ message: "Short URL not found" });
+//     }
+
+//     const clientIp = requestIp.getClientIp(req);
+//     const parser = new UAParser(req.headers["user-agent"]);
+//     const ua = parser.getResult();
+
+//     const urlanalytics = new UrlClick({
+//       urlId: url._id,
+//       ip: clientIp,
+//       os: ua.os.name,
+//       browser: ua.browser.name,
+//       device: ua.device.type || "desktop",
+//       referer: req.headers.referer || "direct",
+//     });
+
+//     return res.redirect(url.originalUrl);
+//   } catch (error: any) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Error fetching users",
+//       error: error.message,
+//     });
+//   }
+// };
+
 export const redirectShortUrl = async (req: Request, res: Response) => {
   try {
     const { code } = req.params;
-    const url = await Url.findOneAndUpdate(
-      {
-        shortCode: code,
-      },
-      {
-        $inc: {
-          clicks: 1,
-        },
-      },
-      {
-        new: true,
-      }
-    );
 
+    const url = await Url.findOne({ shortCode: code });
     if (!url) {
-      return res.status(404).json({ message: "Short URL not found" });
+      return res.status(404).send("Short URL not found");
     }
 
-    const clientIp = requestIp.getClientIp(req);
+    // 1️⃣ Increment total clicks
+    await Url.updateOne({ _id: url._id }, { $inc: { clicks: 1 } });
+
+    // 2️⃣ Parse user-agent
     const parser = new UAParser(req.headers["user-agent"]);
     const ua = parser.getResult();
 
-    const urlanalytics = new UrlClick({
+    // 3️⃣ Save analytics (DO NOT RETURN BEFORE THIS)
+    UrlClick.create({
       urlId: url._id,
-      ip: clientIp,
-      os: ua.os.name,
-      browser: ua.browser.name,
+      ip:
+        (req.headers["x-forwarded-for"] as string)?.split(",")[0] ||
+        req.socket.remoteAddress,
+      browser: ua.browser.name || "Unknown",
+      os: ua.os.name || "Unknown",
       device: ua.device.type || "desktop",
       referer: req.headers.referer || "direct",
+    }).catch((err) => {
+      console.error("Analytics save failed:", err);
     });
 
-    return res.redirect(url.originalUrl, urlanalytics);
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "Error fetching users",
-      error: error.message,
-    });
+    // 4️⃣ Redirect LAST
+    return res.redirect(url.originalUrl);
+  } catch (error) {
+    console.error("Redirect error:", error);
+    return res.status(500).send("Server error");
   }
 };
