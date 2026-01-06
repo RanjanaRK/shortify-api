@@ -40,6 +40,11 @@ export const currentUser = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteUserAccount = async (req: Request, res: Response) => {
+  try {
+  } catch (error) {}
+};
+
 export const getUserActivity = async (req: Request, res: Response) => {
   try {
     const identityQuery = req.user?.id
