@@ -25,7 +25,7 @@ export const generateQrCode = async (req: Request, res: Response) => {
         createdBy: req.user?.id || null,
       });
 
-      const shortUrl = `${process.env.BASE_URL}/${newUrl.shortCode}`;
+      const shortUrl = `${process.env.BASE_URL}/api/${newUrl.shortCode}`;
 
       const qrImage = await QRCode.toBuffer(shortUrl);
 

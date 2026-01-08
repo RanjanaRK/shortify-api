@@ -1,6 +1,6 @@
 import express from "express";
 import { generateQrCode } from "../controllers/qrController";
-import { requireAuth } from "../middlewares/auth";
+import { requireAuth } from "../middlewares/authToken";
 
 const router = express.Router();
 
