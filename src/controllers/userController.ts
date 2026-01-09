@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Url } from "../models/Url";
 import { User } from "../models/User";
+import { UrlClick } from "../models/UrlClick";
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
@@ -42,7 +43,54 @@ export const currentUser = async (req: Request, res: Response) => {
 
 export const deleteUserAccount = async (req: Request, res: Response) => {
   try {
-  } catch (error) {}
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    // find user
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // find urls
+    const userUrls = await Url.find({ createdBy: userId });
+
+    const urlIds = userUrls.map((u) => u._id);
+
+    // Delete analytics
+    await UrlClick.deleteMany({ urlId: { $in: urlIds } });
+
+    //  Delete URLs
+    await Url.deleteMany({ createdBy: userId });
+
+    //  Delete user
+    await User.findByIdAndDelete(userId);
+
+    //  Clear cookies
+    res.clearCookie("access_token");
+    res.clearCookie("refresh_token");
+
+    return res.status(200).json({
+      success: true,
+      message: "Account deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete account error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete account",
+    });
+  }
 };
 
 export const getUserActivity = async (req: Request, res: Response) => {
