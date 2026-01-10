@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Url } from "../models/Url";
-import { User } from "../models/User";
 import { UrlClick } from "../models/UrlClick";
+import { User } from "../models/User";
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {

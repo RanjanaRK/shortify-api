@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
+import { UAParser } from "ua-parser-js";
 import { AnonymousUser } from "../models/AnonymousUser";
 import { Url } from "../models/Url";
 import { UrlClick } from "../models/UrlClick";
-import requestIp from "request-ip";
-import { UAParser } from "ua-parser-js";
 
 export const CreateShortUrl = async (req: Request, res: Response) => {
   const base = process.env.BASE_URL!.replace(/\/$/, "");
@@ -133,50 +132,6 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
-// export const redirectShortUrl = async (req: Request, res: Response) => {
-//   try {
-//     const { code } = req.params;
-//     const url = await Url.findOneAndUpdate(
-//       {
-//         shortCode: code,
-//       },
-//       {
-//         $inc: {
-//           clicks: 1,
-//         },
-//       },
-//       {
-//         new: true,
-//       }
-//     );
-
-//     if (!url) {
-//       return res.status(404).json({ message: "Short URL not found" });
-//     }
-
-//     const clientIp = requestIp.getClientIp(req);
-//     const parser = new UAParser(req.headers["user-agent"]);
-//     const ua = parser.getResult();
-
-//     const urlanalytics = new UrlClick({
-//       urlId: url._id,
-//       ip: clientIp,
-//       os: ua.os.name,
-//       browser: ua.browser.name,
-//       device: ua.device.type || "desktop",
-//       referer: req.headers.referer || "direct",
-//     });
-
-//     return res.redirect(url.originalUrl);
-//   } catch (error: any) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Error fetching users",
-//       error: error.message,
-//     });
-//   }
-// };
 
 export const redirectShortUrl = async (req: Request, res: Response) => {
   try {

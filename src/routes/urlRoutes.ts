@@ -1,8 +1,8 @@
 import { Router } from "express";
 
+import { getUrlAnalytics } from "../controllers/urlClicksController";
 import { CreateShortUrl, redirectShortUrl } from "../controllers/urlController";
 import { checkAnonUser, optionalAuth } from "../middlewares/authanon";
-import { getUrlAnalytics } from "../controllers/urlClicksController";
 import { requireAuth } from "../middlewares/authToken";
 
 const router = Router();
