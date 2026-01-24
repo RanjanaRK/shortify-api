@@ -104,3 +104,64 @@ GET /:shortCode
 ### Analytics
 
 GET /api/analytics/:urlId
+
+## 🗄 Database Models (High-Level)
+
+### User
+
+- email
+- password
+- createdAt
+
+### URL
+
+- originalUrl
+- shortCode
+- userId (optional for anonymous users)
+- clickCount
+- createdAt
+
+### Analytics
+
+- urlId
+- timestamp
+- ip / userAgent (optional)
+
+### AnonymousUsage
+
+- anonymousUserId
+- urlCount
+- createdAt
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory:
+
+PORT=5000
+
+JWT_SECRET=your_access_secret
+
+REFRESH_TOKEN_SECRET=your_refresh_secret
+
+MONGO_URI=your_mongodb_connection_string
+
+BASE_URL=
+
+ANON_SECRET=your_anonymous_secret
+
+CLIENT_URL=
+
+## ▶️ Run Locally
+
+1. Clone the repository
+2. Install dependencies
+
+```bash
+npm install
+```
+
+```bash
+npm run dev
+```
