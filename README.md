@@ -89,27 +89,35 @@ Database (MongoDB)
 
 ### Auth
 
+```
 POST /auth/register
 POST /auth/login
 POST /auth/logout
 DELETE /api/auth/delete-account
+```
 
 ### User
 
+```
 GET /api/user/me
 DELETE /api/user/deleteAccount
 GET /api/user/users
 GET /api/user/activity
+```
 
 ### QRcode
 
+```
 POST /api/qr/generate
+```
 
 ### URL
 
+```
 POST /api/urlShort
 GET /api/urls/analytics/:id
 GET /:code
+```
 
 ---
 
