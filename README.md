@@ -85,7 +85,7 @@ Database (MongoDB)
 
 ---
 
-## 📦 API Endpoints (Sample)
+## 📦 API Endpoints
 
 ### Auth
 
@@ -105,7 +105,7 @@ GET /api/user/users
 GET /api/user/activity
 ```
 
-### QRcode
+### QRc Code
 
 ```
 POST /api/qr/generate
@@ -121,7 +121,7 @@ GET /:code
 
 ---
 
-## 🗄 Database Models
+## 🗄 Database Models (High-Level)
 
 ### User
 
@@ -159,7 +159,7 @@ PORT=8000
 JWT_SECRET=your_access_secret
 REFRESH_TOKEN_SECRET=your_refresh_secret
 MONGO_URI=your_mongodb_connection_string
-BASE_URL=backend_base_url (used for generating short URLs)
+BASE_URL=backend_base_url(e.g. https://api.example.com)
 CLIENT_URL=frontend_url (used for CORS and redirects)
 ANON_SECRET=your_anonymous_secret
 
@@ -205,5 +205,8 @@ https://github.com/RanjanaRK/shortify-ui
 
 ## 👨‍💻 Author
 
-Sparkle K  
-Backend / Full-Stack Developer
+**Xyz**  
+Full-Stack Developer (Next.js · Node.js · MongoDB · Express)
+
+🔗 LinkedIn: https://www.linkedin.com/
+🐙 GitHub: https://github.com/RanjanaRK
