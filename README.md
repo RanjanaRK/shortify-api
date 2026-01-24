@@ -168,15 +168,9 @@ npm run dev
 
 ---
 
-## ✅ 3. Rate Limiting Section (You Built It — SHOW IT 🔥)
-
-You mentioned rate limiting earlier but didn’t document it clearly.
-
-```md
 ### 🚦 Rate Limiting
 
 - Separate rate limits for:
   - Anonymous users
   - Authenticated users
 - Helps prevent abuse and improves API reliability
-```
