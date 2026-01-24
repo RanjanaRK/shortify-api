@@ -40,10 +40,9 @@ Node.js, Express.js, MongoDB, and JWT authentication.
 ### 📎 QR Code Generation (On-Demand)
 
 - QR codes are available **only for authenticated users**
-- QR codes are generated **on-demand** using the short URL
+- QR codes are generated using the short URL
 - QR images are **not stored in the database**
 - This keeps the system stateless and reduces storage overhead
-- The QR code can be regenerated anytime from the short URL
 
 ### 📊 Analytics & User Activity
 
@@ -63,8 +62,17 @@ Node.js, Express.js, MongoDB, and JWT authentication.
 
 ---
 
-## 🔑 Authentication Flow
+## 🧱 System Architecture
 
-- Access token for protected APIs
-- Refresh token rotation
-- Token invalidation on logout
+Client (Next.js)
+|
+|-- REST APIs
+|-- JWT Authentication
+|
+Backend (Express.js)
+|
+|-- Auth Service
+|-- URL Service
+|-- Analytics Service
+|
+Database (MongoDB)
