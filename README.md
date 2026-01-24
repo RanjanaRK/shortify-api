@@ -14,3 +14,16 @@ Node.js, Express.js, MongoDB, and JWT authentication.
 - Secure logout
 - Account deletion
 - Rate limiting (anonymous & authenticated users)
+
+### 🔗 URL Management
+
+- Short URL generation
+- Redirection handling
+- QR code generation
+
+### 📊 Analytics
+
+- Click analytics
+- User activity tracking
+
+---
