@@ -197,6 +197,17 @@ npm run dev
 
 ---
 
+## ⚡ Load & Performance Testing
+
+- Load testing was performed locally using **Autocannon**
+- Focused on high-traffic endpoints:
+  - URL redirect (`GET /:code`)
+- Database read operations were validated under concurrent load
+- The system remained stable with no crashes during testing
+- Temporary load test scripts were removed after validation to keep the repository clean
+
+---
+
 ## 🌐 Frontend Repository
 
 https://github.com/RanjanaRK/shortify-ui
