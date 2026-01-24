@@ -169,3 +169,9 @@ npm run dev
   - Anonymous users
   - Authenticated users
 - Helps prevent abuse and improves API reliability
+
+---
+
+## 🌐 Frontend Repository
+
+https://github.com/RanjanaRK/shortify-ui
