@@ -37,6 +37,14 @@ Node.js, Express.js, MongoDB, and JWT authentication.
 - QR code generation for URLs
 - Supports both anonymous and authenticated users
 
+### 📎 QR Code Generation (On-Demand)
+
+- QR codes are available **only for authenticated users**
+- QR codes are generated **on-demand** using the short URL
+- QR images are **not stored in the database**
+- This keeps the system stateless and reduces storage overhead
+- The QR code can be regenerated anytime from the short URL
+
 ### 📊 Analytics & User Activity
 
 - Click count tracking per URL
@@ -51,7 +59,7 @@ Node.js, Express.js, MongoDB, and JWT authentication.
 - Express.js
 - MongoDB
 - Mongoose
-- JWT
+- JWT (Access & Refresh Tokens)
 
 ---
 
