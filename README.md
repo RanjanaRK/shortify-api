@@ -89,21 +89,31 @@ Database (MongoDB)
 
 ### Auth
 
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
+POST /auth/register
+POST /auth/login
+POST /auth/logout
 DELETE /api/auth/delete-account
+
+### User
+
+GET /api/user/me
+DELETE /api/user/deleteAccount
+GET /api/user/users
+GET /api/user/activity
+
+### QRcode
+
+POST /api/qr/generate
 
 ### URL
 
-POST /api/url/shorten
-GET /:shortCode
+POST /api/urlShort
+GET /api/urls/analytics/:id
+GET /:code
 
-### Analytics
+---
 
-GET /api/analytics/:urlId
-
-## 🗄 Database Models (High-Level)
+## 🗄 Database Models
 
 ### User
 
