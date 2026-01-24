@@ -10,20 +10,53 @@ Node.js, Express.js, MongoDB, and JWT authentication.
 ### 🔐 Authentication & Security
 
 - User registration & login
-- JWT Access & Refresh token authentication
-- Secure logout
+- JWT-based authentication
+  - Access Token
+  - Refresh Token
+- Secure logout (refresh token invalidation)
 - Account deletion
-- Rate limiting (anonymous & authenticated users)
+- Protected routes using middleware
+
+### 🕵️ Anonymous User Support (Cookie-Based)
+
+- When a user accesses the platform without authentication:
+  - A temporary **anonymousUserId** is generated
+  - The ID is stored securely in an HTTP-only cookie
+- This ID is used to:
+  - Track anonymous URL generation count
+  - Enforce the free limit of **3 URL generations**
+- Once the user logs in or registers:
+  - The anonymous cookie is **deleted**
+  - The user transitions fully to an authenticated session
+- This ensures clean state management and prevents duplicate tracking
 
 ### 🔗 URL Management
 
-- Short URL generation
-- Redirection handling
-- QR code generation
+- Generate short URLs
+- Redirect short URLs to original URLs
+- QR code generation for URLs
+- Supports both anonymous and authenticated users
 
-### 📊 Analytics
+### 📊 Analytics & User Activity
 
-- Click analytics
-- User activity tracking
+- Click count tracking per URL
+- User activity logging
+- Analytics available for authenticated users
 
 ---
+
+## 🛠 Tech Stack
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+
+---
+
+## 🔑 Authentication Flow
+
+- Access token for protected APIs
+- Refresh token rotation
+- Token invalidation on logout
