@@ -205,7 +205,7 @@ https://github.com/RanjanaRK/shortify-ui
 
 ## 👨‍💻 Author
 
-**Xyz**  
+**Ranjana Kumari**  
 Full-Stack Developer (Next.js · Node.js · MongoDB · Express)
 
 🔗 LinkedIn: https://www.linkedin.com/
