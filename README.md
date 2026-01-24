@@ -64,11 +64,13 @@ Node.js, Express.js, MongoDB, and JWT authentication.
 
 ## 🧱 System Architecture
 
+```
 Client (Next.js)
 ↓
 Backend (Express.js) - Auth Service - URL Service - Analytics Service
 ↓
 Database (MongoDB)
+```
 
 ## 🔑 Authentication Flow
 
