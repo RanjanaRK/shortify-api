@@ -3,6 +3,9 @@
 Backend service for a production-grade URL shortener built with
 Node.js, Express.js, MongoDB, and JWT authentication.
 
+This service provides secure URL shortening with authentication,
+anonymous usage limits, analytics, and on-demand QR code generation.
+
 ---
 
 ## 🚀 Features
