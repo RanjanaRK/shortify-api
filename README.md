@@ -76,3 +76,31 @@ Backend (Express.js)
 |-- Analytics Service
 |
 Database (MongoDB)
+
+## 🔑 Authentication Flow
+
+1. User logs in and receives **Access Token + Refresh Token**
+2. Access Token is used for protected routes
+3. When Access Token expires:
+   - Refresh Token generates a new Access Token
+4. Logout invalidates the refresh token
+
+---
+
+## 📦 API Endpoints (Sample)
+
+### Auth
+
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/logout
+DELETE /api/auth/delete-account
+
+### URL
+
+POST /api/url/shorten
+GET /:shortCode
+
+### Analytics
+
+GET /api/analytics/:urlId
