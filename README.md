@@ -78,7 +78,7 @@ Database (MongoDB)
 ## 🔑 Authentication Flow
 
 1. User logs in and receives **Access Token + Refresh Token**
-2. Access Token is used **on Demand** for protected routes
+2. Access Token is used for accessing protected routes
 3. When Access Token expires:
    - Refresh Token generates a new Access Token
 4. Logout invalidates the refresh token
@@ -138,18 +138,12 @@ GET /api/analytics/:urlId
 Create a `.env` file in the root directory:
 
 PORT=5000
-
 JWT_SECRET=your_access_secret
-
 REFRESH_TOKEN_SECRET=your_refresh_secret
-
 MONGO_URI=your_mongodb_connection_string
-
-BASE_URL=
-
+BASE_URL=backend_base_url (used for generating short URLs)
+CLIENT_URL=frontend_url (used for CORS and redirects)
 ANON_SECRET=your_anonymous_secret
-
-CLIENT_URL=
 
 ---
 
@@ -177,6 +171,17 @@ npm run dev
 
 ---
 
+## 📡 API Behavior
+
+- Returns `401 Unauthorized` when authentication is required
+- Returns `429 Too Many Requests` when rate limits are exceeded
+- Returns `404 Not Found` for invalid short URLs
+
 ## 🌐 Frontend Repository
 
 https://github.com/RanjanaRK/shortify-ui
+
+## 👨‍💻 Author
+
+Sparkle K  
+Backend / Full-Stack Developer
