@@ -65,22 +65,15 @@ Node.js, Express.js, MongoDB, and JWT authentication.
 ## 🧱 System Architecture
 
 Client (Next.js)
-|
-|-- REST APIs
-|-- JWT Authentication
-|
-Backend (Express.js)
-|
-|-- Auth Service
-|-- URL Service
-|-- Analytics Service
-|
+↓
+Backend (Express.js) - Auth Service - URL Service - Analytics Service
+↓
 Database (MongoDB)
 
 ## 🔑 Authentication Flow
 
 1. User logs in and receives **Access Token + Refresh Token**
-2. Access Token is used for protected routes
+2. Access Token is used **on Demand** for protected routes
 3. When Access Token expires:
    - Refresh Token generates a new Access Token
 4. Logout invalidates the refresh token
@@ -152,6 +145,8 @@ BASE_URL=
 ANON_SECRET=your_anonymous_secret
 
 CLIENT_URL=
+
+---
 
 ## ▶️ Run Locally
 
