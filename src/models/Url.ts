@@ -24,8 +24,12 @@ const urlSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    isTest: {
+      type: Boolean,
+      default: false, // safer default
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Url = mongoose.model("Url", urlSchema);
