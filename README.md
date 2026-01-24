@@ -177,9 +177,13 @@ npm run dev
 - Returns `429 Too Many Requests` when rate limits are exceeded
 - Returns `404 Not Found` for invalid short URLs
 
+---
+
 ## 🌐 Frontend Repository
 
 https://github.com/RanjanaRK/shortify-ui
+
+---
 
 ## 👨‍💻 Author
 
