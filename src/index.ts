@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes";
 import qrRoute from "./routes/qrRoutes";
 import urlRoutes from "./routes/urlRoutes";
 import userRoutes from "./routes/userRoutes";
+import testRoutes from "./routes/testRoutes";
 import app from "./server";
 
 dotenv.config();
@@ -20,7 +21,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 app.use(express.json());
 app.use(cookieParser());
@@ -30,6 +31,7 @@ app.use("/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api", urlRoutes);
 app.use("/api/qr", qrRoute);
+app.use("/testApi", testRoutes);
 
 app.listen(8000, () => {
   console.log("server is running okay");
