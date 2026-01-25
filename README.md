@@ -1,6 +1,6 @@
-# 🔗 URL Shortener – Backend
+# 🔗 Shortify – Backend
 
-Backend service for a production-grade URL shortener built with
+Backend service for a production-grade Shortify built with
 Node.js, Express.js, MongoDB, and JWT authentication.
 
 This service provides secure URL shortening with authentication,
