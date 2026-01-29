@@ -98,13 +98,11 @@ export const getUserActivity = async (req: Request, res: Response) => {
     const identityQuery = req.user?.id
       ? { createdBy: req.user.id }
       : req.anonId
-      ? { anonId: req.anonId }
-      : null;
+        ? { anonId: req.anonId }
+        : null;
 
     if (!identityQuery)
       return res.status(401).json({ message: "Unauthorized" });
-
-    console.log(req.user.id, "userId");
 
     const urls = await Url.find(identityQuery).sort({
       createdAt: -1,

@@ -28,7 +28,7 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
 
     //LOGGED IN USER
 
-    console.log(req.user?.id, ":userid from url hsorten");
+    // console.log(req.user?.id, ":userid from url hsorten");
 
     if (req.user?.id) {
       const existing = await Url.findOne({
@@ -71,7 +71,7 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
     const anonUser = await AnonymousUser.findOneAndUpdate(
       { anonId: anonUserId },
       { $setOnInsert: { count: 0 } },
-      { new: true, upsert: true }
+      { new: true, upsert: true },
     );
 
     if (!anonUser) {
@@ -118,7 +118,7 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
 
     await AnonymousUser.updateOne(
       { anonId: anonUserId },
-      { $inc: { count: 1 } }
+      { $inc: { count: 1 } },
     );
 
     return res.status(200).json({

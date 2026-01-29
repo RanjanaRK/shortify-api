@@ -37,7 +37,7 @@ export const register = async (req: Request, res: Response) => {
         {
           $set: { createdBy: newUser.id },
           $unset: { anonId: "" },
-        }
+        },
       );
     }
 
@@ -89,7 +89,7 @@ export const login = async (req: Request, res: Response) => {
       process.env.JWT_SECRET!,
       {
         expiresIn: "5m",
-      }
+      },
     );
 
     // create refresh token
@@ -99,7 +99,7 @@ export const login = async (req: Request, res: Response) => {
       process.env.REFRESH_TOKEN_SECRET!,
       {
         expiresIn: "2d",
-      }
+      },
     );
 
     //  Migrate anonymous URLs to logged-in user
@@ -113,7 +113,7 @@ export const login = async (req: Request, res: Response) => {
         {
           $set: { createdBy: existingUser.id },
           $unset: { anonId: "" },
-        }
+        },
       );
     }
 
@@ -161,8 +161,6 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 
     const refreshToken = req.cookies.refresh_token;
 
-    console.log(refreshToken, ":refreshtoken");
-
     // If refresh token does not exist, user is not authenticated
     if (!refreshToken) {
       return res.status(401).json({ message: "Refresh Token is missing" });
@@ -171,9 +169,8 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     // Verify refresh token using refresh token secret
     const decoded = jwt.verify(
       refreshToken,
-      process.env.REFRESH_TOKEN_SECRET!
+      process.env.REFRESH_TOKEN_SECRET!,
     ) as JwtPayload;
-    console.log(decoded);
 
     //  Create a new short-lived access token
     const newAccessToken = jwt.sign(
@@ -181,7 +178,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
       process.env.JWT_SECRET!,
       {
         expiresIn: "5m",
-      }
+      },
     );
 
     // store new access token in cookies
