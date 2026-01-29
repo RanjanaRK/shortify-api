@@ -4,11 +4,17 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Url } from "../models/Url";
 import { User } from "../models/User";
 
+const isProd = process.env.NODE_ENV === "production";
+
 // <----------------------------------REGISTRATION----------------------------------->
 
 export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     const normalizedEmail = email.trim().toLowerCase();
 
@@ -126,8 +132,8 @@ export const login = async (req: Request, res: Response) => {
     // Store access token in cookie
     res.cookie("access_token", accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       expires: expiryDate,
       path: "/",
     });
@@ -135,8 +141,8 @@ export const login = async (req: Request, res: Response) => {
     // Store refresh token in cookie
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       expires: refreshExpiry,
       path: "/",
     });
@@ -184,8 +190,8 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     // store new access token in cookies
     res.cookie("access_token", newAccessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       path: "/",
       expires: expiryDate,
     });
@@ -202,15 +208,15 @@ export const logout = async (req: Request, res: Response) => {
   try {
     res.clearCookie("access_token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       path: "/",
     });
 
     res.clearCookie("refresh_token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       path: "/",
     });
 

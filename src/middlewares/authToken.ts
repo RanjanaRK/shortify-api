@@ -1,6 +1,8 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 
+const isProd = process.env.NODE_ENV === "production";
+
 export const requireAuth = async (
   req: Request,
   res: Response,
@@ -35,8 +37,8 @@ export const requireAuth = async (
 
       res.cookie("access_token", newAccessToken, {
         httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
         path: "/",
       });
 
