@@ -1,7 +1,7 @@
 {
   "name": "shortify-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Production-grade URL shortener backend with JWT auth, anonymous access, analytics, and QR code support.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,8 +13,22 @@
     "type": "git",
     "url": "git+https://github.com/RanjanaRK/shortify-api.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "url-shortener",
+    "nodejs",
+    "express",
+    "mongodb",
+    "jwt-auth",
+    "authentication",
+    "anonymous-users",
+    "rate-limiting",
+    "analytics",
+    "qr-code",
+    "backend-api",
+    "rest-api",
+    "typescript"
+  ],
+  "author": "Ranjana K",
   "license": "MIT",
   "type": "commonjs",
   "bugs": {
