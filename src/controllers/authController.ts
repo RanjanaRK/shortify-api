@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Url } from "../models/Url";
 import { User } from "../models/User";
 
-const isProd = process.env.NODE_ENV === "production";
+// const isProd = process.env.NODE_ENV === "production";
 
 // <----------------------------------REGISTRATION----------------------------------->
 
@@ -132,8 +132,8 @@ export const login = async (req: Request, res: Response) => {
     // Store access token in cookie
     res.cookie("access_token", accessToken, {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
       expires: expiryDate,
       path: "/",
     });
@@ -141,8 +141,8 @@ export const login = async (req: Request, res: Response) => {
     // Store refresh token in cookie
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
       expires: refreshExpiry,
       path: "/",
     });
@@ -190,8 +190,8 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     // store new access token in cookies
     res.cookie("access_token", newAccessToken, {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
       path: "/",
       expires: expiryDate,
     });
@@ -208,15 +208,15 @@ export const logout = async (req: Request, res: Response) => {
   try {
     res.clearCookie("access_token", {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
       path: "/",
     });
 
     res.clearCookie("refresh_token", {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
       path: "/",
     });
 

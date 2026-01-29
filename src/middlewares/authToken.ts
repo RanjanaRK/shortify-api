@@ -37,8 +37,8 @@ export const requireAuth = async (
 
       res.cookie("access_token", newAccessToken, {
         httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
+        secure: true,
+        sameSite: "none",
         path: "/",
       });
 
