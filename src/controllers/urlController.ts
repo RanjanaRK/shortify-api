@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { UAParser } from "ua-parser-js";
-import { AnonymousUser } from "../models/AnonymousUser";
 import { Url } from "../models/Url";
 import { UrlClick } from "../models/UrlClick";
+import { AnonymousUser } from "../models/AnonymousUser";
 
 export const CreateShortUrl = async (req: Request, res: Response) => {
   const base = process.env.BASE_URL!.replace(/\/$/, "");
