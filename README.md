@@ -222,3 +222,7 @@ Full-Stack Developer (Next.js · Node.js · MongoDB · Express)
 🔗 LinkedIn: https://www.linkedin.com/in/ranjanark/
 
 🐙 GitHub: https://github.com/RanjanaRK
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
