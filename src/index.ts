@@ -16,7 +16,7 @@ dbConnection();
 
 app.use(
   cors({
-    origin: "https://shortify-ui-r215-git-main-ranjanarks-projects.vercel.app/",
+    origin: "https://shortify-ui-r215.vercel.app",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
