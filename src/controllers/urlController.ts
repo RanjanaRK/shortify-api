@@ -13,8 +13,6 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
 
     const anonUserId = req.anonId;
 
-    // console.log(anonUserId);
-
     if (!originalUrl) {
       return res.status(400).json({ message: "url is required" });
     }
@@ -27,8 +25,6 @@ export const CreateShortUrl = async (req: Request, res: Response) => {
     }
 
     //LOGGED IN USER
-
-    // console.log(req.user?.id, ":userid from url hsorten");
 
     if (req.user?.id) {
       const existing = await Url.findOne({

@@ -1,5 +1,5 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const isProd = process.env.NODE_ENV === "production";
 

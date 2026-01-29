@@ -6,9 +6,9 @@ import {
   register,
 } from "../controllers/authController";
 
+import { checkAnonUser } from "../middlewares/authanon";
 import { requireAuth } from "../middlewares/authToken";
 import { limiter } from "../middlewares/rateLimiter";
-import { checkAnonUser } from "../middlewares/authanon";
 
 const router = Router();
 
