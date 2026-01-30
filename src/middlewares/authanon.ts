@@ -1,9 +1,16 @@
-import { NextFunction, Request, Response } from "express";
+import { CookieOptions, NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { nanoid } from "nanoid";
 import { signedAnonToken, verifyAnonToken } from "../utils/anonToken";
 
 const isProd = process.env.NODE_ENV === "production";
+
+const cookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+  path: "/",
+};
 
 export const optionalAuth = async (
   req: Request,
@@ -39,28 +46,13 @@ export const optionalAuth = async (
         { expiresIn: "5m" },
       );
 
-      res.cookie("access_token", newAccessToken, {
-        httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
-        path: "/",
-      });
+      res.cookie("access_token", newAccessToken, cookieOptions);
 
       req.user = { id: decodedRefresh.id };
       return next();
     } catch {
-      res.clearCookie("access_token", {
-        httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
-        path: "/",
-      });
-      res.clearCookie("refresh_token", {
-        httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
-        path: "/",
-      });
+      res.clearCookie("access_token", cookieOptions);
+      res.clearCookie("refresh_token", cookieOptions);
       req.user = null;
       return next();
     }
@@ -90,11 +82,8 @@ export const checkAnonUser = (
     const signedToken = signedAnonToken(anonId);
 
     res.cookie("anon-id", signedToken, {
-      httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      ...cookieOptions,
       maxAge: 1000 * 60 * 60 * 24 * 365,
-      path: "/",
     });
   }
 

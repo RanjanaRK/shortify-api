@@ -1,10 +1,18 @@
 import bcrypt from "bcryptjs";
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Url } from "../models/Url";
 import { User } from "../models/User";
 
 // const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV === "production";
+
+const cookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+  path: "/",
+};
 
 // <----------------------------------REGISTRATION----------------------------------->
 
@@ -124,27 +132,18 @@ export const login = async (req: Request, res: Response) => {
     }
 
     //  Clear anonymous  cookie after login
-    res.clearCookie("anon-id", {
-      httpOnly: true,
-      sameSite: "lax",
-    });
+    res.clearCookie("anon-id", cookieOptions);
 
     // Store access token in cookie
     res.cookie("access_token", accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      ...cookieOptions,
       expires: expiryDate,
-      path: "/",
     });
 
     // Store refresh token in cookie
     res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      ...cookieOptions,
       expires: refreshExpiry,
-      path: "/",
     });
 
     // Send success response
@@ -189,10 +188,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 
     // store new access token in cookies
     res.cookie("access_token", newAccessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/",
+      ...cookieOptions,
       expires: expiryDate,
     });
 
@@ -206,19 +202,9 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    res.clearCookie("access_token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/",
-    });
+    res.clearCookie("access_token", cookieOptions);
 
-    res.clearCookie("refresh_token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/",
-    });
+    res.clearCookie("refresh_token", cookieOptions);
 
     return res.status(200).json({
       success: true,
