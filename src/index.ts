@@ -18,11 +18,7 @@ app.set("trust proxy", true);
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://shortify-ui-r215.vercel.app",
-      "https://shortify-ui-r215-git-main-ranjanarks-projects.vercel.app",
-    ],
+    origin: ["http://localhost:3000", "https://shortify-ui-m5yr.vercel.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
