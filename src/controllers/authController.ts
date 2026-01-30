@@ -7,10 +7,10 @@ import { User } from "../models/User";
 // const isProd = process.env.NODE_ENV === "production";
 const isProd = process.env.NODE_ENV === "production";
 
-const cookieOptions: CookieOptions = {
+export const cookieOptions: CookieOptions = {
   httpOnly: true,
-  secure: true, // 🔥 MUST
-  sameSite: "none",
+  secure: isProd, // true only in HTTPS (production)
+  sameSite: isProd ? "none" : "lax", // dev-friendly
   path: "/",
 };
 
@@ -160,6 +160,24 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+// <----------------------------------LOGOUT----------------------------------->
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("access_token", cookieOptions);
+
+    res.clearCookie("refresh_token", cookieOptions);
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const refreshAccessToken = async (req: Request, res: Response) => {
   try {
     const expiryDate = new Date(Date.now() + 1000 * 60 * 5);
@@ -195,23 +213,5 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     return res.status(200).json({ message: "Access token refreshed" });
   } catch (error) {
     return res.status(401).json({ message: "Invalid refresh token" });
-  }
-};
-
-// <----------------------------------LOGOUT----------------------------------->
-
-export const logout = async (req: Request, res: Response) => {
-  try {
-    res.clearCookie("access_token", cookieOptions);
-
-    res.clearCookie("refresh_token", cookieOptions);
-
-    return res.status(200).json({
-      success: true,
-      message: "Logged out successfully",
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
   }
 };
