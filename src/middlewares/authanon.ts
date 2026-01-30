@@ -77,6 +77,8 @@ export const checkAnonUser = (
     anonId = verifyAnonToken(token) as string;
   }
 
+  console.log(req.secure);
+
   if (!anonId) {
     anonId = nanoid();
     const signedToken = signedAnonToken(anonId);

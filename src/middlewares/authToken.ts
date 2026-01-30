@@ -44,6 +44,8 @@ export const requireAuth = async (
 
       res.cookie("access_token", newAccessToken, cookieOptions);
 
+      console.log(req.secure); // should be true on Render production
+
       req.user = { id: decoded.id };
       return next();
     } catch {
