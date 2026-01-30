@@ -14,15 +14,23 @@ dotenv.config();
 
 dbConnection();
 
+app.set("trust proxy", 1);
+
 app.use(
   cors({
-    origin: "https://shortify-ui-r215.vercel.app",
+    origin: [
+      "http://localhost:3000",
+      "https://shortify-ui-r215.vercel.app",
+      "https://shortify-ui-r215-git-main-ranjanarks-projects.vercel.app",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmet());
 
