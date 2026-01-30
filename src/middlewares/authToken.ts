@@ -88,6 +88,11 @@ export const requireAuth = async (
   const accessToken = req.cookies.access_token;
   const refreshToken = req.cookies.refresh_token;
 
+  console.log(req.secure);
+
+  console.log(accessToken, ";accesstoken");
+  console.log(refreshToken, ";refreshTokeeeeeeeeeeeeeen");
+
   if (!accessToken && !refreshToken) {
     return res.status(401).json({ message: "Unauthorized" });
   }

@@ -73,6 +73,8 @@ export const optionalAuth = async (
   const accessToken = req.cookies.access_token;
   const refreshToken = req.cookies.refresh_token;
 
+  //   console.log(accessToken, ";accesstoken");
+  console.log(refreshToken, ";refreshTokeeeeeeeeeeeeeen");
   if (!accessToken && !refreshToken) {
     req.user = null;
     return next();
