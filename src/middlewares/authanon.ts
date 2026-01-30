@@ -41,8 +41,8 @@ export const optionalAuth = async (
 
       res.cookie("access_token", newAccessToken, {
         httpOnly: true,
-        secure: true,
-        sameSite: "lax",
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
         path: "/",
       });
 
@@ -51,14 +51,14 @@ export const optionalAuth = async (
     } catch {
       res.clearCookie("access_token", {
         httpOnly: true,
-        secure: true,
-        sameSite: "lax",
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
         path: "/",
       });
       res.clearCookie("refresh_token", {
         httpOnly: true,
-        secure: true,
-        sameSite: "lax",
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
         path: "/",
       });
       req.user = null;
