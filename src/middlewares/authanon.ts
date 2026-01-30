@@ -92,7 +92,7 @@ export const checkAnonUser = (
     res.cookie("anon-id", signedToken, {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24 * 365,
       path: "/",
     });
