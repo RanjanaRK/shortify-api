@@ -4,13 +4,12 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Url } from "../models/Url";
 import { User } from "../models/User";
 
-// const isProd = process.env.NODE_ENV === "production";
 const isProd = process.env.NODE_ENV === "production";
 
 export const cookieOptions: CookieOptions = {
   httpOnly: true,
-  secure: isProd, // true only in HTTPS (production)
-  sameSite: isProd ? "none" : "lax", // dev-friendly
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
   path: "/",
 };
 
