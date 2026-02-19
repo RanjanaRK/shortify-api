@@ -38,7 +38,8 @@ export const generateQrCode = async (req: Request, res: Response) => {
       });
     }
 
-    const finalShortUrl = `${process.env.BASE_URL}/${existing.shortCode}`;
+    const finalShortUrl = `${process.env.BASE_URL}/api/${existing.shortCode}`;
+
     const qrImage = await QRCode.toDataURL(finalShortUrl);
 
     return res.status(200).json({
